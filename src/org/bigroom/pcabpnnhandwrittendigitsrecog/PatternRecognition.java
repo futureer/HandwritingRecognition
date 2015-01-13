@@ -281,6 +281,7 @@ public class PatternRecognition extends Activity implements OnClickListener {
 				break;
 			case R.id.reset_btn :
 				preloadBitmap();
+				imageShowView.requestLayout();
 				break;
 			case R.id.recogintion_btn :
 				imgOrign.getPixels(pix, 0, w, 0, 0, w, h);
