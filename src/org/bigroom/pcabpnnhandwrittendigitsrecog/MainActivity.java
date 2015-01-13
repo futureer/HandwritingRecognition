@@ -23,6 +23,7 @@ import android.hardware.Camera.ShutterCallback;
 import android.hardware.Camera.Size;
 import android.os.Bundle;
 import android.os.Environment;
+import android.text.Html;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -30,14 +31,16 @@ import android.view.Surface;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
 
 public class MainActivity extends Activity {
 	Preview mPreview;
 	private Activity a;
-	private Bundle b = new Bundle();;
+	private Bundle b = new Bundle();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -46,15 +49,24 @@ public class MainActivity extends Activity {
 				WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+		a = this;
 		mPreview = new Preview(this);
 		DrawOnTop mDraw = new DrawOnTop(this);
 		setContentView(mPreview);
 		addContentView(mDraw, new LayoutParams(LayoutParams.WRAP_CONTENT,
 				LayoutParams.WRAP_CONTENT));
-		a = this;
-		// setContentView(R.layout.activity_main);
-	}
+		Button btn = new Button(a);
+		btn.setText(Html.fromHtml("<b>ÅÄÕÕ</b>"));
+		addContentView(btn, new LayoutParams(LayoutParams.WRAP_CONTENT,
+				LayoutParams.WRAP_CONTENT));
+		btn.setOnClickListener(new OnClickListener(){
 
+			@Override
+			public void onClick(View v) {
+				mPreview.mCamera.autoFocus(mPreview.mAutoFocusCallback);
+			}
+		});
+	}
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		menu.add(0, 0, 0, R.string.Reset);
@@ -77,7 +89,7 @@ public class MainActivity extends Activity {
 			case 2 :
 				Intent intent = new Intent();
 				intent.setClass(MainActivity.this, PatternRecognition.class);
-				
+
 				intent.putExtras(b);
 				startActivity(intent);
 				MainActivity.this.finish();
@@ -89,20 +101,20 @@ public class MainActivity extends Activity {
 
 	class DrawOnTop extends View {
 		Paint paint = new Paint();
-		
+
 		public DrawOnTop(Context context) {
 			super(context);
 		}
 
 		@Override
 		protected void onDraw(Canvas canvas) {
-			
+
 			paint.setStyle(Paint.Style.STROKE);
 			paint.setColor(Color.GREEN);
 			paint.setStrokeWidth(3);
 			// canvas.drawRect(0, 100/3, 1600/3, 400/3, paint); //¾ØÐÎ¿ò
-			canvas.drawRect(60, 100, 420, 300, paint);
-			
+			canvas.drawRect(60, 100, 420, 225, paint);
+
 			b.putInt("left", 60);
 			b.putInt("top", 60);
 			b.putInt("right", 60);
@@ -178,7 +190,8 @@ public class MainActivity extends Activity {
 					bos.flush();
 					bos.close();
 					stopCamera();
-					initCamera();
+					// initCamera();
+					a.finish();
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -190,9 +203,9 @@ public class MainActivity extends Activity {
 					android.hardware.Camera.AutoFocusCallback {
 			public void onAutoFocus(boolean focused, Camera camera) {
 				/* ¶Ôµ½½¹µãÅÄÕÕ */
-//				if (focused) {
-					takePicture();
-//				}
+				// if (focused) {
+				takePicture();
+				// }
 			}
 		};
 
