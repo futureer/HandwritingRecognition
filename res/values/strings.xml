@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">PcaBpNNHandwrittenDigitsRecog</string>
+    <string name="action_settings">Settings</string>
+	<string name="Reset">Reset</string>
+	<string name="TakePic">Take Picture</string>
+	<string name="Recog">Recognition</string>
+	<string name="toGray">Gray</string>
+	<string name="Exit">Exit</string>
+	<string name="toBinary">Binaryzation</string>
+	<string name="toBinaryOTSU">OTSU Binaryzation</string>
+	<string name="GradientSharp">Gradient Sharp</string>
+	<string name="RemoveScatterNoise">Remove Scatter Noise</string>
+	<string name="SlopeAdjust">Slope Adjust</string>
+	<string name="CharSegment">Segmentation</string>
+	<string name="PcaBpnnRecog">PcaBpnnRecog</string>
+</resources>
