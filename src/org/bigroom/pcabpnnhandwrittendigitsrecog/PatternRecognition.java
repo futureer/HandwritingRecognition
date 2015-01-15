@@ -9,21 +9,26 @@ import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class PatternRecognition extends Activity implements OnClickListener {
 	ImageView imageShowView = null;
-	TextView resulTextView = null;
+	EditText resulTextView = null;
 	TextView timeTextView = null;
 	Bitmap imgOrign = null;
 	int w;
@@ -31,7 +36,8 @@ public class PatternRecognition extends Activity implements OnClickListener {
 	int[] pix = null;
 	int[] resultInt = null;
 	private Bitmap resultImg = null;
-	private Button takePicBtn, resetBtn,recogBtn;
+	private Button takePicBtn, resetBtn, recogBtn;
+	private ImageButton dialBtn;
 	private LinearLayout btnLine, btnLine1, btnLine2;
 
 	@SuppressLint("NewApi")
@@ -39,14 +45,17 @@ public class PatternRecognition extends Activity implements OnClickListener {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-		resulTextView = (TextView) findViewById(R.id.resultshow);
+		resulTextView = (EditText) findViewById(R.id.resultshow);
 		timeTextView = (TextView) findViewById(R.id.time);
 		takePicBtn = (Button) findViewById(R.id.take_pic);
 		resetBtn = (Button) findViewById(R.id.reset_btn);
 		recogBtn = (Button) findViewById(R.id.recogintion_btn);
+		dialBtn = (ImageButton) findViewById(R.id.dial_btn);
 		recogBtn.setOnClickListener(this);
+		dialBtn.setOnClickListener(this);
 		takePicBtn.setOnClickListener(this);
 		resetBtn.setOnClickListener(this);
+
 		btnLine = (LinearLayout) findViewById(R.id.btn_line);
 		btnLine1 = (LinearLayout) findViewById(R.id.btn_line1);
 		btnLine2 = (LinearLayout) findViewById(R.id.btn_line2);
@@ -283,6 +292,19 @@ public class PatternRecognition extends Activity implements OnClickListener {
 				preloadBitmap();
 				imageShowView.requestLayout();
 				break;
+			case R.id.dial_btn :
+				String tel = resulTextView.getText().toString();
+				if (isMobilNum(tel)) {
+					Uri uri = Uri.parse("tel:"
+							+ resulTextView.getText().toString());
+					Intent in1 = new Intent(Intent.ACTION_DIAL, uri);
+					startActivity(in1);
+				} else {
+					Toast.makeText(getApplicationContext(),
+							"not a valid phone number", Toast.LENGTH_SHORT)
+							.show();
+				}
+				break;
 			case R.id.recogintion_btn :
 				imgOrign.getPixels(pix, 0, w, 0, 0, w, h);
 				int result2[] = null;
@@ -352,5 +374,16 @@ public class PatternRecognition extends Activity implements OnClickListener {
 				imageShowView.setImageBitmap(resultImg);
 				break;
 		}
+	}
+	/*
+	 * 验证手机号格式
+	 */
+	public static boolean isMobilNum(String phoneNum) {
+		/* 13,15,18开头后面九位数字即可满足条件 */
+		String telRange = "[1][3587]\\d{9}";
+		if (TextUtils.isEmpty(phoneNum))
+			return false;
+		else
+			return phoneNum.matches(telRange);
 	}
 }

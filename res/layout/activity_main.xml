@@ -30,14 +30,29 @@
             android:text="Reset" />
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/resultshow"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:text="recognition result"
-        android:textSize="25sp" >
-    </TextView>
+        android:layout_margin="20dp"
+        android:orientation="horizontal" >
+
+        <EditText
+            android:id="@+id/resultshow"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="5"
+            android:gravity="center_horizontal"
+            android:hint="recognition result"
+            android:inputType="phone"
+            android:textSize="25sp" />
+
+        <ImageButton
+            android:id="@+id/dial_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:src="@android:drawable/ic_menu_call" />
+    </LinearLayout>
 
     <TextView
         android:id="@+id/time"
